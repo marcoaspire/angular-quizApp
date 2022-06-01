@@ -1,0 +1,19 @@
+<div>
+   {{days}}:{{hours}}:{{minutes}}:{{seconds}}
+
+</div>
+<input type="time" step=1 min='00:01' max= '11:59' [(ngModel)]="timer">
+<button (click)="set()" >Set</button>
+
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+   <div class="col" *ngFor="let category of categories">
+     <a class="card" routerLink="/quiz/{{category.categoryID}}">
+       <img src="..." class="card-img-top" alt="...">
+       <div class="card-body">
+         <h5 class="card-title">{{category.categoryName}}</h5>
+         <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque fugiat aliquid inventore rerum, ut voluptas laudantium vitae nobis enim dignissimos repellat nam iure iusto, impedit nostrum distinctio odit, possimus natus.</p>
+       </div>
+      </a>
+   </div>
+ </div>

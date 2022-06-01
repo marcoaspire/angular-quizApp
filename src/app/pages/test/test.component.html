@@ -1,0 +1,11 @@
+<p>test works!</p>
+<div class="row mt-3" *ngIf="questions.length !== 0">
+    <div class="col"  *ngFor="let question of questions">
+      <label class="form-label">{{question.query | json}}</label>
+      <!-- <select class="form-control" formControlName="country">
+        <option value="">Select one</option>
+         <option *ngFor="let country of questions" [value]="country.cca2"></option> 
+
+      </select> -->
+    </div>
+  </div>
