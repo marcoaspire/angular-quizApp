@@ -6,3 +6,11 @@ export interface Category {
     categoryName: string;
     question?:     null;
 }
+
+
+export interface UserAnswers {
+   
+    answerID:   number;
+    questionID: number;
+    question?:  string;
+}
