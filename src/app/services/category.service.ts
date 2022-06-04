@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { take,map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { Answer, Question } from '../interfaces/interfaces.interfaces';
 
 
 const base_url= environment.base_url;
@@ -37,8 +38,23 @@ export class CategoryService {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
+  }
 
-    
-}
+  postQuestion(body:Question){
+
+
+    return this.http.post<any>(`${base_url}/questions`,body)
+    .pipe(
+      map((resp: {ok:boolean,question:Question} ) => resp.question) 
+    );
+
+  }
+
+  postAnswers(body:Answer[]){
+    return this.http.post<any>(`${base_url}/answers`,body)
+    .pipe(
+      map((resp: {ok:boolean,answers:Answer[]} ) => resp.answers) 
+    );
+  }
 
 }

@@ -8,9 +8,91 @@
        <div class="card-body">
          <h5 class="card-title">{{category.categoryName}}</h5>
          <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque fugiat aliquid inventore rerum, ut voluptas laudantium vitae nobis enim dignissimos repellat nam iure iusto, impedit nostrum distinctio odit, possimus natus.</p>
-         <a routerLink="/quiz/{{category.categoryID}}" class="btn btn-secondary mx-4">Add question</a>
-         <a routerLink="/quiz/{{category.categoryID}}" class="btn btn-primary">Start Quiz</a>
+         <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-secondary mx-4" (click)="click(category.categoryID)">Add new question</button>
+         <button routerLink="/quiz/{{category.categoryID}}" class="btn btn-primary">Start Quiz</button >
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1"  data-bs-backdrop="static" data-bs-keyboard="false" 
+          aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New question {{category.categoryName}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="reset()"></button>
+              </div>
+              <div class="modal-body">
+                <form class="form p-t-20" [formGroup]="myForm" (ngSubmit)="saveQuestion()">
+                  <div class="form-group">
+                      <label for="exampleInputuname">Question</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="ti-user"></i></div>
+                          <input type="text" class="form-control" 
+                              formControlName="question"
+                              id="exampleInputuname" placeholder="Question" autocomplete="off">
+                      </div>
+                      
+                      <div class="mb-3 row">
+                        <label for="" class="col-sm-3">Add</label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Add answer"
+                                    [formControl]='newAnswer'
+                                    (keyup.enter)='addAnswer()'
+                                    >
+                                    <button class="btn btn-outline-primary" type="button" (click)='addAnswer()' 
+                                    >Add</button>                
+                            </div>
+                        </div>
+                      </div>
+
+                      
+                      <div class="mb-3 row">
+                        <label for="" class="col-sm-3">Answers</label>
+                      </div>
+
+                      <div class="mb-1 row input-group" formArrayName='answers' *ngFor="let item of answersArr.controls; let i=index">
+                        <div class="col-sm-3">
+                          <label  *ngIf="i===0" class="alert alert-success">Correct answer</label>
+                        </div>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                              
+
+                              <!-- <div class="form-check">
+                                <input 
+                                    class="form-check-input" 
+                                    type="radio" 
+                                    [value]="i"
+                                    formControlName="correct"
+                                    >
+                              </div> -->
+
+                                <input type="text" class="form-control col-sm-5"
+                                  [formControlName]="i"
+                                >
+                                <button class="btn btn-outline-danger" type="button" (click)='delete(i)' 
+                                >Delete</button>                
+                                    
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                </form> 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="reset()">Close</button>
+                <button type="submit" class="btn btn-primary"  data-bs-dismiss="modal" (click)="saveQuestion()" [disabled]="myForm.invalid" >Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
       </div>
    </div>
  </div>
+
+
+
+ <h5>Valor forms</h5>
+<pre>{{myForm.value|json }}</pre>

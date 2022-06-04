@@ -59,6 +59,7 @@ export class TestComponent implements OnInit,OnDestroy {
       .subscribe((res:any) => {
         this.questions=res;
         this.questions.forEach(element => {
+          this.categoriesService.shuffleArray(element.answers.$values);
           this.group['questionID'+element.questionID] = ['', [Validators.required]];
           element.answers.$values.forEach(
             (e:any)=>{
