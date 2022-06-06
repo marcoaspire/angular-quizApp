@@ -1,10 +1,11 @@
 
+  use APIQuiz
   select * from tbl_answers;
   select * from tbl_categories;
   select * from tbl_questions order by QuestionID desc /*where CategoryID=5;*/
   select * from tbl_answers order by AnswerID desc 
 
-  delete from tbl_answers where AnswerID=1002 or AnswerID=1003
+  delete from tbl_answers where AnswerID=1004 
   delete from tbl_questions where QuestionID>1000 and QuestionID<1010
 
 insert into tbl_answers(PosibleAnswer,QuestionID,Correct)

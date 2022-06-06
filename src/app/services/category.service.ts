@@ -26,12 +26,27 @@ export class CategoryService {
     .pipe(
        map((res:any) => {
          this.shuffleArray(res.category.question.$values)
-         return res.category.question.$values.slice(0,10);
+         return {
+           'categoryName' : res.category.categoryName,
+           'questions': res.category.question.$values.slice(0,10)
+         }
        }
       )
     );
-
   }
+
+  postCategory(name:String){
+    const body ={
+      "categoryName":name
+    }
+    return this.http.post(`${base_url}/categories`,body);
+  }
+
+
+  deleteCategory(id:number){
+    return this.http.delete(`${base_url}/categories/${id}`);
+  }
+
 
   shuffleArray(array:any[]) {
     for (let i = array.length - 1; i > 0; i--) {

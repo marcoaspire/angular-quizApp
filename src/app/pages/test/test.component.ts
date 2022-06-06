@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { delay } from 'rxjs';
 import { UserAnswers } from 'src/app/interfaces/interfaces.interfaces';
 import { CategoryService } from 'src/app/services/category.service';
 import Swal from 'sweetalert2'
@@ -13,20 +14,18 @@ import Swal from 'sweetalert2'
 })
 export class TestComponent implements OnInit,OnDestroy {
 
+  timerDefault=10;
   hours:number=0;
-  minutes:number=0;
-  seconds:number=0;
+  minutes:number=1;
+  seconds:number=this.timerDefault;
   days:number=0;
   
-  timer: any= { hours:0, minutes: 30, seconds: 15 };
 
   public interval:any;
 
-  constructor(private activatedRoute:ActivatedRoute, private categoriesService:CategoryService,private fb:FormBuilder) {
-
-    
-
-
+  constructor(private activatedRoute:ActivatedRoute, private categoriesService:CategoryService,private fb:FormBuilder,
+              private router:Router
+    ) {
    }
 
   // myForm: FormGroup = this.fb.group({
@@ -38,26 +37,44 @@ export class TestComponent implements OnInit,OnDestroy {
   group:any = {
   };
 
+  categoryName:string="";
   questions:any[]=[];
   correctAnswers:any[]=[];
+  initiated:boolean=false;
+  results:boolean[]=[];
+  score:number=0;
 
   ngOnInit(): void {
     this.restart();
+    //console.log(this.initiated);
     
   }
 
   ngOnDestroy(): void {
     clearInterval(this.interval);
-
   }
 
   getData(){
     this.activatedRoute.params
+    .pipe(
+      delay(1000)
+    )
     .subscribe(({category}) => {
       //console.log(category);
       this.categoriesService.getCategory(category)
       .subscribe((res:any) => {
-        this.questions=res;
+        if (res.questions.length==0){
+          const navigationExtras: NavigationExtras = {state: {data: 'Question Bank is empty, add some questions please'}};
+          this.router.navigate(['/home'], navigationExtras);
+        }
+        this.categoryName=res.categoryName;
+        this.questions=res.questions;
+
+        console.log("question");
+        
+        console.log(this.questions);
+        
+
         this.questions.forEach(element => {
           this.categoriesService.shuffleArray(element.answers.$values);
           this.group['questionID'+element.questionID] = ['', [Validators.required]];
@@ -73,10 +90,17 @@ export class TestComponent implements OnInit,OnDestroy {
     });
   }
 
+  setTimer(){
+    console.log(this.seconds);
+    console.log(this.minutes);
+    this.setCountDownDate(this.seconds);
+    this.restart();
+    
+  }
   check(){
     //idquestion/idAnswer
     let userAnswers:Map<number,number>=new Map();
-    let score:number=0;
+    
 
     console.log(this.correctAnswers);
     for (const [key, value] of Object.entries(this.myForm.value)) {
@@ -91,18 +115,20 @@ export class TestComponent implements OnInit,OnDestroy {
       const element = this.correctAnswers[index].questionID;
       if (userAnswers.get(element) == this.correctAnswers[index].answerID )
       {
-        console.log("bien");
-        
-        score++;
+        this.results.push(true);
+        this.score++;
+      }
+      else{
+        this.results.push(false);
       }
     }
     //TODO: OPEN ALERT
-    console.log(score);
-    if (score>5)
+    console.log(this.score);
+    if (this.score>5)
     {
       Swal.fire({
         title: 'Congratulations!',
-        text: `You got ${score} answers right`,
+        text: `You got ${this.score} answers right`,
         icon: 'success',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -124,7 +150,7 @@ export class TestComponent implements OnInit,OnDestroy {
 
       Swal.fire({
         title: 'Keep trying!',
-        text: `You got ${score} answers right`,
+        text: `You got ${this.score} answers right`,
         icon: 'error',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -133,7 +159,6 @@ export class TestComponent implements OnInit,OnDestroy {
         cancelButtonText: 'Close'
       }).then((result) => {
         if (result.isConfirmed) {
-          //reiniciar quiz
           this.restart();
           //this.getData();
           //clearInterval(this.interval);
@@ -142,77 +167,49 @@ export class TestComponent implements OnInit,OnDestroy {
         }
       })
     }
-
-    
-
-    //reiniciar
-    
-    
   }
 
+  checkAnswer(index:number){
+    return !this.results[index] && !this.initiated;
+  }
   isValid(field: string){
-    
     return this.myForm.controls[field].errors && this.myForm.controls[field].touched;
   }
-
-
-  set(){
-    console.log(this.timer);
-    console.log(this.timer.seconds);
-    var now = new Date();
-    now.setHours(now.getHours() + this.hours);
-    now.setMinutes(now.getMinutes() + this.minutes);
-    now.setSeconds(now.getSeconds() + this.seconds);
-    var currentDate = new Date().getTime();
-    console.log(currentDate);
-    // Set the date we're counting down to
-    var countDownDate = new Date().getTime();
-    //var distance = countDownDate - now;
-     // Time calculations for days, hours, minutes and seconds
-    //var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((currentDate % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((currentDate % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((currentDate % (1000 * 60)) / 1000);
-
-    console.log("dia");
-    /*
-    console.log(hours,
-      minutes,
-      seconds);
-    */
-    
-  }
-
-
   restart(){
     clearInterval(this.interval);
-    
-    this.restartValues();
+    this.score=0;
     this.getData();
-    this.setCountDownDate();
-    
-
+    if (this.seconds!=this.timerDefault)
+    {
+      this.setCountDownDate(this.seconds);
+    }
+    else{
+      this.restartValues();
+      this.setCountDownDate(this.timerDefault);
+    }
+    this.initiated=true;
   }
 
   restartValues(){
     this.hours=0;
     this.minutes=0;
     this.seconds=0;
-    this.days=0;  
+    this.days=0; 
   }
   
-  setCountDownDate(){
+  setCountDownDate(seconds:number){
     //var countDownDate = new Date("Jan 5, 2024 15:37:25").getTime();
     var countDownDate = new Date();
     
     //countDownDate.setMinutes(countDownDate.getMinutes()+5);
-    countDownDate.setSeconds(countDownDate.getSeconds()+15);
+    //countDownDate.setMinutes(countDownDate.getMinutes()+1);
+
+    countDownDate.setSeconds(countDownDate.getSeconds()+seconds+2);
 
 
     this.interval=setInterval(()=>{
        console.log("si");
-       //this.seconds--;
-      
+       
       // Get today's date and time
       var now = new Date().getTime();
       
@@ -228,9 +225,11 @@ export class TestComponent implements OnInit,OnDestroy {
     
       // If the count down is finished, write some text
       if (distance < 0) {
-        
+        this.initiated=false;
         this.check();
         clearInterval(this.interval);
+        console.log("borrado");
+        
         this.restartValues();
       }
     },1000);

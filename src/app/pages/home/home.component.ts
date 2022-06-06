@@ -1,6 +1,7 @@
 import { Time } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Answer, Category, Question } from 'src/app/interfaces/interfaces.interfaces';
 import { CategoryService } from 'src/app/services/category.service';
 import Swal from 'sweetalert2';
@@ -18,13 +19,30 @@ export class HomeComponent implements OnInit {
   public categories:Category[]=[];
   public categoryID!:number;
   public myForm!:FormGroup;
+  public message:String="";
+  addNewAnswer:boolean=false;
+
+
   newAnswer:FormControl = this.fb.control('',Validators.required);
   
   get answersArr(){
     return this.myForm.get('answers') as FormArray;
   }
 
-  constructor(private categoryService:CategoryService,private fb:FormBuilder) {
+  constructor(private categoryService:CategoryService,private fb:FormBuilder,private router: Router) {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state != undefined)
+    {
+      const state = navigation?.extras.state as {data: string};
+      this.message=state.data;
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: state.data
+      })
+      //console.log(state.data);
+    }
+   // this.data = state.data;
     
    }
   
@@ -34,7 +52,6 @@ export class HomeComponent implements OnInit {
     //now.setHours();
     this.categoryService.getCategories()
     .subscribe((resp:any) => {
-      console.log(resp.categories.$values);
       this.categories=resp.categories.$values;
 
       /*
@@ -63,11 +80,40 @@ export class HomeComponent implements OnInit {
 
   }
 
+  typeNewAnswer(){
+    this.addNewAnswer=true;
+  }
+
   click(id:number){
     this.categoryID=id;
     console.log(id);
     
     
+  }
+  deleteCategory(id:number){
+
+    return Swal.fire({
+      title: `Are you sure you want to delete?`,
+      text: "You won't be able to revert this!",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => 
+    {
+      if (result.isConfirmed) 
+      {
+        this.categoryService.deleteCategory(id)
+        .subscribe({
+          next: (res:any) => {
+            Swal.fire('chido',res.msg,'success');
+            
+          },
+          error:(res:any) => Swal.fire('error',res.msg,'error')
+        });
+      }
+    })
   }
 
   saveQuestion(){
@@ -186,6 +232,8 @@ export class HomeComponent implements OnInit {
       a.removeAt(0)
     }
     console.log(a.length);
+    this.addNewAnswer=false;
+
   }
   
 

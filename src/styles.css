@@ -1,4 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
 .red{
     color: red;
-  }
+}
+
+.right{
+  position: absolute;
+  right: 50px;
+  width: 350px;
+}
+.number{
+  float: left;
+  color: white;
+  text-align: center;
+  background: #50af31;
+  border-radius: 50%;
+  height: 29px;
+  width: 1.75em;
+  font-weight: bold;
+  
+}
+.timer{
+  font-size: 36px;
+}
+.cursor{
+  cursor: pointer;
+  color: white;
+}
+.center{
+  margin: 0;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.card{
+  height:200px
+}

@@ -9,6 +9,8 @@ import { HomeComponent } from './pages/home/home.component';
 import { TestComponent } from './pages/test/test.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalComponent } from './components/modal/modal.component';
+import { HeaderComponent } from './components/header/header.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { ModalComponent } from './components/modal/modal.component';
     AppComponent,
     HomeComponent,
     TestComponent,
-    ModalComponent
+    ModalComponent,
+    HeaderComponent,
+    LoadingComponent
   ],
   imports: [
     CommonModule,
