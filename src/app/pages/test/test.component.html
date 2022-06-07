@@ -1,73 +1,57 @@
-<!-- 
-<div class="row">
-  <div class="col-2">
-    Minutes:<input type="number" [(ngModel)]="minutes" style="width:40px;" class="me-3" min="0">
-  </div>
-  <div class="col-2">
-    Seconds:<input type="number" [(ngModel)]="seconds" style="width:40px;" min="0">
-  </div>
-  <div class="col">
-    <button class="btn btn-primary" (click)="setTimer()">Set timer</button>
-  </div>
-
-</div> -->
-
-
-<div class="right row">
-  <div class="timer col">
-    {{days}}:{{hours}}:{{minutes}}:{{seconds}}  
-    
-  </div>
-  <button *ngIf="!initiated"  class="btn btn-secondary col" (click)="restart()">Retake quiz</button>
-  <!-- <button class="btn btn-secondary" (click)="restart()">Stop</button> -->
-
-
-</div>
-
-<!-- <input type="time" step=1 min='00:01' max= '11:59' [(ngModel)]="timer">
-<button (click)="set()" >Set</button> -->
-<h3>{{categoryName}}</h3>
-
-<div *ngIf="!initiated" class="card mt-2" style="width: 13rem; background-color:beige; height: 100px;">
-  <div class="card-body">
-    <h5 class="card-title">Scoring</h5>
-    <p class="card-text">You scored {{score}}/10 = {{score*10}}%.</p>
-  </div>
-</div>
-
-
-<div class="row"  *ngIf="questions.length==0">
-  <app-loading></app-loading>
-</div>
-<!-- Questions -->
-<form action="" [formGroup]="myForm" (ngSubmit)="check()" *ngIf="questions.length>0">
-
-  <div class="row mt-3" *ngIf="questions.length !== 0">
-    <div class="col-12 mt-3"  *ngFor="let question of questions; let i=index">
-      <span class="number me-1">{{i+1}}</span>
-      <label class="form-label">
-        {{question.query}} {{question.questionID}}
-      </label>
-      <select class="form-control" [class.red]="checkAnswer(i)" formControlName="questionID{{question.questionID}}">
-        <option  [disabled]="!initiated"  value=""  >Choose an option</option>
-        <option  [disabled]="!initiated"  *ngFor="let answer of question.answers.$values" [value]="answer.answerID" >{{answer.answerID}}{{answer.posibleAnswer}}</option> 
-      </select>
-      <span class="form-text red" *ngIf="isValid('questionID'+question.questionID)">Error</span>
-    </div>
-  </div>
+  <!-- 
   <div class="row">
+    <div class="col-2">
+      Minutes:<input type="number" [(ngModel)]="minutes" style="width:40px;" class="me-3" min="0">
+    </div>
+    <div class="col-2">
+      Seconds:<input type="number" [(ngModel)]="seconds" style="width:40px;" min="0">
+    </div>
     <div class="col">
-      <button class="btn btn-primary float-end mt-3" type="submit" [disabled]="myForm.invalid" > Send</button>
+      <button class="btn btn-primary" (click)="setTimer()">Set timer</button>
+    </div>
+
+  </div> -->  
+  
+  <div class="right row">
+    <div class="timer col">
+      {{days}}:{{hours}}:{{minutes}}:{{seconds}}  
+    </div>
+    <button *ngIf="!isInitiated"  class="btn btn-secondary col" (click)="restart()">Retake quiz</button>
+  </div>
+  <h3>{{categoryName}}</h3>
+  <div *ngIf="!isInitiated" class="card mt-2" style="width: 13rem; background-color:beige; height: 100px;">
+    <div class="card-body">
+      <h5 class="card-title">Scoring</h5>
+      <p class="card-text">You scored {{score}}/10 = {{score*10}}%.</p>
     </div>
   </div>
-  <h2>Form valid: {{ myForm.invalid | json}} </h2>
-  <pre>Form status: {{ myForm.valid | json}} </pre>
-  <pre>Form valid: {{ myForm.errors | json}} </pre>
-</form>
-<!-- [disabled]="myForm.invalid"
-<pre>name errors: {{ myForm.controls['name'].errors | json}} </pre>
-<pre>email errors: {{ myForm.controls['email'].errors | json}} </pre>
-<pre>username errors: {{ myForm.controls['username'].errors | json}} </pre>
-<pre>password errors: {{ myForm.controls['password'].errors | json}} </pre>
-
-<pre>username errors: {{ myForm.controls['confirmPass'].errors | json}} </pre> -->
+  <div class="row"  *ngIf="questions.length==0">
+    <app-loading></app-loading>
+  </div>
+  <!-- Questions -->
+  <form action="" [formGroup]="myForm" (ngSubmit)="checkAnswers()" *ngIf="questions.length>0">
+    <div class="row mt-3" *ngIf="questions.length !== 0">
+      <div class="col-12 mt-3"  *ngFor="let question of questions; let i=index">
+        <span class="number me-1">{{i+1}}</span>
+        <label class="form-label">
+          {{question.query}}
+        </label>
+        <select class="form-control" [class.red]="checkAnswer(i)" formControlName="questionID{{question.questionID}}">
+          <option  [disabled]="!isInitiated"  value=""  >Choose an option</option>
+          <option  [disabled]="!isInitiated"  *ngFor="let answer of question.answers.$values" [value]="answer.answerID">
+            {{answer.posibleAnswer}}
+          </option> 
+        </select>
+        <span class="form-text red" *ngIf="isValid('questionID'+question.questionID)">Error</span>
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary float-end mt-3" type="submit" [disabled]="myForm.invalid" > Send</button>
+      </div>
+    </div>
+    <h2>Form valid: {{ myForm.invalid | json}} </h2>
+    <pre>Form status: {{ myForm.valid | json}} </pre>
+    <pre>Form valid: {{ myForm.errors | json}} </pre>
+  </form>

@@ -224,8 +224,6 @@ export class HomeComponent implements OnInit {
   }
 
   reset(){
-    console.log("restart");
-    //this.newAnswer.reset();
     this.myForm.reset();
     let a=this.myForm.get('answers') as FormArray;
     while (a.length !== 0) {

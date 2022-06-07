@@ -8,11 +8,14 @@
   delete from tbl_answers where AnswerID=1004 
   delete from tbl_questions where QuestionID>1000 and QuestionID<1010
 
+
 insert into tbl_answers(PosibleAnswer,QuestionID,Correct)
-        values ('Mercury',31,0),
-            ('Mars',31,0),
-            ('Neptune',31,0),
-            ('Uranus',31,1);
+     values ('Hamlet',64,0),
+            ('Twelfth Night',64,0),
+            ('King Lear',64,0),
+            ('Pygmalion',64,1);
+
+
 
 
   insert into tbl_categories(CategoryName) values ('Planets'),

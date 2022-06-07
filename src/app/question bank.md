@@ -276,7 +276,8 @@ Hanged after the trials of Nuremberg
 Shot by the Russians
 Suicide--
 No one knows
-      
+
+
      
 Which of these countries did NOT fight in WWII?
 Finland
@@ -284,17 +285,23 @@ Greece
 Ireland--
 Italy
 
-What was the name of the American effort to build an atomic bomb?
+
+
+
+35-What was the name of the American effort to build an atomic bomb?
 The Baltimore Project
 The Chicago Project
 The Manhattan Project--
 The Philadelphia Project
+
 
 About 70 million people died as a result of WWII.  What percent of these people were from the United States?
 0.6%--
 5.6%
 15.6%
 30.6%
+
+
 
 What was the role of Joseph Goebbels in the Nazi government?
 Head of the Air Force
@@ -303,59 +310,72 @@ Minister of Propaganda--
 Minister of War Production
 
 
-What was the code name of the German invasion of the Soviet Union?
+38-What was the code name of the German invasion of the Soviet Union?
 Operation Barbarossa--
 Operation Overlord
 Operation Sea Lion
 Operation Torch
 
-What machine did the Germans use to (unsuccessfully) encrypt their messages?
+
+
+39-What machine did the Germans use to (unsuccessfully) encrypt their messages?
 Boltzmann machine
 Enigma machine--
 Göring machine
 Haber machine
 
-What city's fall to the Japanese in 1942 caused 80,000 British and allied troops to be taken prisoner?
+
+
+40-What city's fall to the Japanese in 1942 caused 80,000 British and allied troops to be taken prisoner?
 Bangkok
 Mumbai
 Shanghai--
 Singapore
 
-What country signed a non-aggression pact with Germany in August, 1939?
+
+41-What country signed a non-aggression pact with Germany in August, 1939?
 Finland
 Soviet Union--
 United Kingdom
 Yugoslavia
 
-Prior to the Nazi takeover, the German government was known as the Weimar Republic.  Who or what is Weimar?
+
+42-Prior to the Nazi takeover, the German government was known as the Weimar Republic.  Who or what is Weimar?
 An adjective meaning "peaceful"
 A city--
 A person
 A treaty
 
-How many aircraft carriers did the Japanese destroy during their attack on Pearl Harbor?
+
+43-How many aircraft carriers did the Japanese destroy during their attack on Pearl Harbor?
 None--
 1
 4
 10
+
     
-Who was the commander of Germany's Afrika Korps?
+44-Who was the commander of Germany's Afrika Korps?
 Albert Kesselring
 Erich Ludendorff
 Erich von Manstein
 Erwin Rommel--
 
-Which of the following is NOT a Winston Churchill speech?
+
+
+45-Which of the following is NOT a Winston Churchill speech?
 I have nothing to offer but blood, toil, tears and sweat
 This was their finest hour
 We have nothing to fear but fear itself--
 We shall fight on the beaches
 
-When Japan surrendered in 1945, which of these cities were still under its control?
+
+
+46-When Japan surrendered in 1945, which of these cities were still under its control?
 Beijing
 Seoul
 Taipei
 All of the above--
+
 
 # Which One Doesn't Belong 7
 
@@ -382,119 +402,152 @@ insert into tbl_questions(Query,CategoryID)
     
 
 
-Historical people
+47-Historical people
 Cervantes
 Tolstoy
 Michelangelo--
 Dickens
 
-U.S. cities
+
+48-U.S. cities
 Sacramento
 Minneapolis--
 Raleigh
 Austin
 --Minneapolis is not a state capital</div>
 
-Historical leaders
+
+
+49-Historical leaders
 Rameses--
 Augustus
 Nero
 Hadrian
       <div class='explanation'>Rameses was an Egyptian pharaoh, not a Roman emperor</div>
-        
-Rock musicians
+
+50-Rock musicians
 Keith Moon--
 Stevie Ray Vaughan
 Eddie Van Halen
 Eric Clapton
 <div class='explanation'>Keith Moon played drums, not guitar</div>
 
-Languages
+51-Languages
 Ukrainian
 Polish
 Russian
 Hungarian--
 <div class='explanation'>Hungarian is not a Slavic language</div>
-Islands
+
+
+52-Islands
 Sumatra
 Sulawesi
 Mindanao--
 Java
 <div class='explanation'>Mindanao is part of the Philippines, not Indonesia</div>
-Cities
+
+53-Cities
 Brisbane
 Auckland--
 Melbourne
 Sydney
 <div class='explanation'>Auckland is in New Zealand, not Australia</div>
-Music instruments
+
+54-Music instruments
 Trombone
 Tuba
 French Horn
 Clarinet--
 <div class='explanation'>Clarinets are woodwinds, not brass instruments</div>
-Painters
+
+
+55-Painters
 Degas
 Monet
 Renoir
 Botticelli--
 <div class='explanation'>Botticelli was not French and also not an impressionist</div>
-Singers
+
+
+
+
+56-Singers
 Zayn Malik
 Niall Horan
 Harry Styles
 Ed Sheeran--
 <div class='explanation'>Ed Sheeran was not part of One Direction</div>
 
-Movies
+
+57-Movies
 Carrie
 The Hunt For Red October--
 Cujo
 The Shining
 <div class='explanation'>"The Hunt for Red October" was written by Tom Clancy, not Stephen King</div>
 
-Japanese movies
+
+
+
+58-Japanese movies
 Spirited Away
 Akira--
 Ponyo
 Princess Mononoke
 <div class='explanation'>"Akira" is not by Studio Ghibli</div>
 
-Living things
+59-Living things
 Coral--
 Seagrass
 Tree
 Fern
 <div class='explanation'>Coral is an animal, not a plant</div>
 
-Letters
+
+60-Letters
 Psi
 Mu
-Aleph
+Aleph--
 Omicron
 <div class='explanation'>Aleph is a Hebrew letter, not a Greek one</div>
+
+
         
-British leaders
+61-British leaders
 Sir Robert Peel
 Earl Grey
 William Gladstone
 William Wilberforce--
 <div class='explanation'>William Wilberforce was never Prime Minister</div>
-Anatomy
+
+
+
+
+62-Anatomy
 Cochlea--
 Retina
 Iris
 Pupil
 <div class='explanation'>The cochlea is part of the ear, not part of the eye</div>
-Words
+
+
+63-Words
 Kayak
 Civic
 Benign--
 Radar
 <div class='explanation'>Benign is not a palindrome</div>
-Plays
+
+64-Plays
 Hamlet
 Twelfth Night
 King Lear
 Pygmalion--
 <div class='explanation'>"Pygmalion" was written by George Bernard Shaw, not William Shakespeare</div>
+
+insert into tbl_answers(PosibleAnswer,QuestionID,Correct)
+     values ('Hamlet',64,0),
+            ('Twelfth Night',64,0),
+            ('King Lear',64,0),
+            ('Pygmalion',64,1);
