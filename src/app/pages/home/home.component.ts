@@ -49,20 +49,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     
-    //now.setHours();
-    this.categoryService.getCategories()
-    .subscribe((resp:any) => {
-      this.categories=resp.categories.$values;
-
-      /*
-      this.categories.forEach((element:Category) => {
-        const {categoryID, categoryName} =element;
-        console.log(categoryID,categoryName)
-      });
-      */
-
-
-    });
+    this.getCategories();
 
     
 
@@ -78,6 +65,25 @@ export class HomeComponent implements OnInit {
     //console.log(currentDate);
     
 
+  }
+
+  getCategories(){
+
+    //now.setHours();
+    this.categoryService.getCategories()
+    .subscribe((resp:any) => {
+
+     this.categories=resp.categories;
+
+      /*
+      this.categories.forEach((element:Category) => {
+        const {categoryID, categoryName} =element;
+        console.log(categoryID,categoryName)
+      });
+      */
+
+
+    });
   }
 
   typeNewAnswer(){
@@ -107,7 +113,8 @@ export class HomeComponent implements OnInit {
         this.categoryService.deleteCategory(id)
         .subscribe({
           next: (res:any) => {
-            Swal.fire('chido',res.msg,'success');
+            Swal.fire('Category deleted',res.msg,'success');
+            this.getCategories();
             
           },
           error:(res:any) => Swal.fire('error',res.msg,'error')

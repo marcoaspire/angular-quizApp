@@ -2,6 +2,12 @@
 .red{
     color: red;
 }
+.green{
+  color: green;
+}
+.white{
+  color: white;
+}
 
 .right{
   position: absolute;
@@ -24,7 +30,7 @@
 }
 .cursor{
   cursor: pointer;
-  color: white;
+  
 }
 .center{
   margin: 0;

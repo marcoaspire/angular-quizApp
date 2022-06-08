@@ -21,14 +21,14 @@ export class CategoryService {
     return this.http.get(`${base_url}/categories`);
   }
 
-  getCategory(id:number){
+  getQuestionsByCategory(id:number){
     return this.http.get(`${base_url}/categories/${id}`)
     .pipe(
        map((res:any) => {
-         this.shuffleArray(res.category.question.$values)
+         this.shuffleArray(res.category.question)
          return {
            'categoryName' : res.category.categoryName,
-           'questions': res.category.question.$values.slice(0,10)
+           'questions': res.category.question.slice(0,10)
          }
        }
       )
@@ -56,8 +56,6 @@ export class CategoryService {
   }
 
   postQuestion(body:Question){
-
-
     return this.http.post<any>(`${base_url}/questions`,body)
     .pipe(
       map((resp: {ok:boolean,question:Question} ) => resp.question) 

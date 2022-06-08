@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category.service';
 import Swal from 'sweetalert2';
 
@@ -14,7 +15,10 @@ export class HeaderComponent implements OnInit {
   public myForm!:FormGroup;
   public category:string="";
 
-  constructor(private categoriesService:CategoryService) { }
+  constructor(private categoriesService:CategoryService,
+      private route:Router
+
+    ) { }
 
   ngOnInit(): void {
     console.log(this.category);
@@ -24,8 +28,16 @@ export class HeaderComponent implements OnInit {
   saveCategory(){
     this.categoriesService.postCategory(this.category)
       .subscribe({
-        next: () =>
-          Swal.fire('chido','','success')
+        next: () =>{
+          Swal.fire('Category saved','','success')
+          .then((result) => {
+            if (result.isConfirmed) {
+              this.route.navigateByUrl('/home').then(() => window.location.reload() )
+
+            }
+          })
+
+        }
         ,
         error:err=>{
           Swal.fire('error',err,'error');
@@ -34,5 +46,9 @@ export class HeaderComponent implements OnInit {
 
         }
       });
+  }
+
+  removeCategoryName(){
+    this.category="";
   }
 }

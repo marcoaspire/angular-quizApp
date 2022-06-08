@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { delay } from 'rxjs';
@@ -19,6 +19,7 @@ export class TestComponent implements OnInit,OnDestroy {
   minutes:number=1;
   seconds:number=this.timerDefault;
   days:number=0;
+  @ViewChild('b') b!: ElementRef<HTMLElement>;
   
 
   public interval:any;
@@ -53,8 +54,9 @@ export class TestComponent implements OnInit,OnDestroy {
       delay(1000)
     )
     .subscribe(({category}) => {
-      this.categoriesService.getCategory(category)
+      this.categoriesService.getQuestionsByCategory(category)
       .subscribe((res:any) => {
+        console.log(res);
         if (res.questions.length==0){
           const navigationExtras: NavigationExtras = {state: {data: 'Question Bank is empty, add some questions please'}};
           this.router.navigate(['/home'], navigationExtras);
@@ -62,9 +64,10 @@ export class TestComponent implements OnInit,OnDestroy {
         this.categoryName=res.categoryName;
         this.questions=res.questions;
         this.questions.forEach(element => {
-          this.categoriesService.shuffleArray(element.answers.$values);
+          
+          this.categoriesService.shuffleArray(element.answers);
           this.group['questionID'+element.questionID] = ['', [Validators.required]];
-          element.answers.$values.forEach(
+          element.answers.forEach(
             (e:any)=>{
               if (e.correct)
                 this.correctAnswers.push(e);
@@ -119,9 +122,9 @@ export class TestComponent implements OnInit,OnDestroy {
           this.restart();
         }
       })
+      
     }
     else{
-
       Swal.fire({
         title: 'Keep trying!',
         text: `You got ${this.score} answers right`,
@@ -149,14 +152,8 @@ export class TestComponent implements OnInit,OnDestroy {
     clearInterval(this.interval);
     this.score=0;
     this.getData();
-    if (this.seconds!=this.timerDefault)
-    {
-      this.setCountDownDate(this.seconds);
-    }
-    else{
-      this.restartValues();
-      this.setCountDownDate(this.timerDefault);
-    }
+    this.restartValues();
+    this.setCountDownDate(this.timerDefault);
     this.isInitiated=true;
   }
 
@@ -184,6 +181,17 @@ export class TestComponent implements OnInit,OnDestroy {
         this.restartValues();
       }
     },1000);
+  }
+
+  cambio(questionID:number){
+    console.log("cambiando" + `questionID${questionID}`);
+    const q=document.getElementById(`questionID${questionID}`);
+
+    console.log(q);
+    q?.blur();
+
+
+    
   }
 
 }

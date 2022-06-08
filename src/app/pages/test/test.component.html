@@ -29,20 +29,23 @@
     <app-loading></app-loading>
   </div>
   <!-- Questions -->
-  <form action="" [formGroup]="myForm" (ngSubmit)="checkAnswers()" *ngIf="questions.length>0">
+  <form id="form" [formGroup]="myForm" (ngSubmit)="checkAnswers()" *ngIf="questions.length>0">
     <div class="row mt-3" *ngIf="questions.length !== 0">
       <div class="col-12 mt-3"  *ngFor="let question of questions; let i=index">
         <span class="number me-1">{{i+1}}</span>
         <label class="form-label">
           {{question.query}}
         </label>
-        <select class="form-control" [class.red]="checkAnswer(i)" formControlName="questionID{{question.questionID}}">
-          <option  [disabled]="!isInitiated"  value=""  >Choose an option</option>
-          <option  [disabled]="!isInitiated"  *ngFor="let answer of question.answers.$values" [value]="answer.answerID">
+        <select class="form-control" [class.red]="checkAnswer(i)" formControlName="questionID{{question.questionID}}" (change)="cambio(question.questionID)"
+          id="questionID{{question.questionID}}"
+        >
+          <option  [disabled]="!isInitiated" value=""  >Choose an option</option>
+          <option [disabled]="!isInitiated" *ngFor="let answer of question.answers" [value]="answer.answerID">
             {{answer.posibleAnswer}}
           </option> 
         </select>
-        <span class="form-text red" *ngIf="isValid('questionID'+question.questionID)">Error</span>
+        <span class="form-text green" *ngIf="results.length>0 && checkAnswer(i)">Correct answer: {{correctAnswers[i].posibleAnswer}}</span>
+        <!-- <span class="form-text red" *ngIf="isValid('questionID'+question.questionID)">Error</span> -->
         <hr>
       </div>
     </div>

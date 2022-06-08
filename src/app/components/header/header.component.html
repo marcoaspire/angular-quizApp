@@ -8,7 +8,7 @@
       </li>
       
     </ul>
-    <a  routerLink="/home" class="nav-link cursor">Home</a>
+    <a  routerLink="/home" class="nav-link cursor white">Home</a>
   </nav> 
 
 
@@ -20,7 +20,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">New Category</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="removeCategoryName()"></button>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="removeCategoryName()">Close</button>
         <button type="submit" class="btn btn-primary"  data-bs-dismiss="modal" (click)="saveCategory()">Save</button>
       </div>
     </div>
