@@ -17,9 +17,9 @@
        <div class="card-body  text-center">
          <h5 class="card-title center">{{category.categoryName}}</h5>
         </div> 
-        <div class="card-footer">
-          <button data-bs-toggle="modal" data-bs-target="#addQuestion" class="btn btn-success mx-4" (click)="click(category.categoryID)">Add new question</button>
-          <button routerLink="/quiz/{{category.categoryID}}" class="btn btn-primary">Start Quiz</button >
+        <div class="card-footer row">
+          <button data-bs-toggle="modal" data-bs-target="#addQuestion" class="btn btn-success mx-1 col" (click)="click(category.categoryID)">Add new question</button>
+          <button routerLink="/quiz/{{category.categoryID}}" class="btn btn-primary col">Start Quiz</button >
         </div>
 
 

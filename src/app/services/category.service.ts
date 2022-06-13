@@ -25,7 +25,10 @@ export class CategoryService {
     return this.http.get(`${base_url}/categories/${id}`)
     .pipe(
        map((res:any) => {
-         this.shuffleArray(res.category.question)
+        if (!res.category){
+          return null;
+        }
+        this.shuffleArray(res.category.question)
          return {
            'categoryName' : res.category.categoryName,
            'questions': res.category.question.slice(0,10)
@@ -44,6 +47,8 @@ export class CategoryService {
 
 
   deleteCategory(id:number){
+    console.log("entre a borrar:"+ id);  
+    
     return this.http.delete(`${base_url}/categories/${id}`);
   }
 

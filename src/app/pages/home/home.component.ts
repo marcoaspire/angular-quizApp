@@ -14,8 +14,6 @@ import Swal from 'sweetalert2';
 })
 export class HomeComponent implements OnInit {
 
-
-  
   public categories:Category[]=[];
   public categoryID!:number;
   public myForm!:FormGroup;
@@ -30,6 +28,7 @@ export class HomeComponent implements OnInit {
   }
 
   constructor(private categoryService:CategoryService,private fb:FormBuilder,private router: Router) {
+    /*
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state != undefined)
     {
@@ -40,31 +39,18 @@ export class HomeComponent implements OnInit {
         title: 'Oops...',
         text: state.data
       })
-      //console.log(state.data);
     }
-   // this.data = state.data;
-    
+    */
    }
   
 
   ngOnInit(): void {
-    
     this.getCategories();
-
-    
-
     this.myForm= this.fb.group({
       question: [,Validators.required],
       answers : this.fb.array( 
-        [
-        ], Validators.required )
-      
-     
+        [], Validators.required )
     });
-
-    //console.log(currentDate);
-    
-
   }
 
   getCategories(){
@@ -92,10 +78,8 @@ export class HomeComponent implements OnInit {
 
   click(id:number){
     this.categoryID=id;
-    console.log(id);
-    
-    
   }
+
   deleteCategory(id:number){
 
     return Swal.fire({
@@ -115,7 +99,6 @@ export class HomeComponent implements OnInit {
           next: (res:any) => {
             Swal.fire('Category deleted',res.msg,'success');
             this.getCategories();
-            
           },
           error:(res:any) => Swal.fire('error',res.msg,'error')
         });
@@ -174,16 +157,6 @@ export class HomeComponent implements OnInit {
           error: console.error
         }
       );
-
-    
-    
-    
-    
-    
-
-
-
-
     //question
     /*
     {
@@ -226,8 +199,7 @@ export class HomeComponent implements OnInit {
   }
 
   delete(index:number){
-    this.answersArr.removeAt(index);
-    
+    this.answersArr.removeAt(index);    
   }
 
   reset(){
