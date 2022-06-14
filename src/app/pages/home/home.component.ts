@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
     */
    }
   
-
+   //ya
   ngOnInit(): void {
     this.getCategories();
     this.myForm= this.fb.group({
@@ -53,12 +53,17 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  //ya
   getCategories(){
-
+    console.log("get categories");
+    
+    console.log(this.categoryService);
+    
     //now.setHours();
     this.categoryService.getCategories()
     .subscribe((resp:any) => {
-
+      console.log(resp);
+      
      this.categories=resp.categories;
 
       /*
@@ -70,6 +75,9 @@ export class HomeComponent implements OnInit {
 
 
     });
+    console.log("sali getCategories");
+    console.log(this.categories.length);
+    
   }
 
   typeNewAnswer(){
@@ -80,8 +88,8 @@ export class HomeComponent implements OnInit {
     this.categoryID=id;
   }
 
+  //ya
   deleteCategory(id:number){
-
     return Swal.fire({
       title: `Are you sure you want to delete?`,
       text: "You won't be able to revert this!",
@@ -94,9 +102,10 @@ export class HomeComponent implements OnInit {
     {
       if (result.isConfirmed) 
       {
-        this.categoryService.deleteCategory(id)
+        this.categoryService.deleteCategory2(id)
         .subscribe({
           next: (res:any) => {
+            console.log("eliminado a " +id);
             Swal.fire('Category deleted',res.msg,'success');
             this.getCategories();
           },
@@ -118,14 +127,13 @@ export class HomeComponent implements OnInit {
       categoryID:this.categoryID,
       query:this.myForm.value.question
     }
-
     let answers:Answer[]=[];
-
-
     this.categoryService.postQuestion(question)
       .subscribe(
         {
           next: (resp:Question) => {
+            console.log("aqui");
+            
             const questionID= resp.questionID;
             //save question
             for (let index = 0; index < this.myForm.value.answers.length; index++) {
@@ -177,6 +185,9 @@ export class HomeComponent implements OnInit {
   }
 
   saveAnswers(answers:Answer[]){
+    console.log("guardando respuestas");
+    console.log(answers);
+    
     this.categoryService.postAnswers(answers)
     .subscribe({
       next: () => {
@@ -186,31 +197,28 @@ export class HomeComponent implements OnInit {
       error:() => Swal.fire('error','','error')
     })
   }
-
+  //ya
   addAnswer(){
-    if (this.newAnswer.invalid){
-
-    }
-    else{
+    if (!this.newAnswer.invalid){
       this.answersArr.push(this.fb.control ( this.newAnswer.value, Validators.required) );
       //this.favoritesArr.push(new FormControl (this.newFavorite.value, Validators.required) );
       this.newAnswer.reset();
     }
   }
 
+  //ya
   delete(index:number){
     this.answersArr.removeAt(index);    
   }
-
+  //ya
   reset(){
     this.myForm.reset();
-    let a=this.myForm.get('answers') as FormArray;
-    while (a.length !== 0) {
-      a.removeAt(0)
+    let answers=this.myForm.get('answers') as FormArray;
+    while (answers.length !== 0) {
+      answers.removeAt(0)
     }
-    console.log(a.length);
+    console.log(answers.length);
     this.addNewAnswer=false;
-
   }
   
 

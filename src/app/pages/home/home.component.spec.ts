@@ -4,10 +4,11 @@ import { HomeComponent } from './home.component';
 import { CategoryService } from 'src/app/services/category.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
-import { FormArray, FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import Swal from 'sweetalert2';
+import { Answer, Question } from 'src/app/interfaces/interfaces.interfaces';
 
 export interface Post{
   id: number;
@@ -21,7 +22,7 @@ describe('HomeComponent', () => {
   let router: jasmine.SpyObj<Router>;
   let http: jasmine.SpyObj<HttpClient>;
   let service:CategoryService;
-  
+  //let mockService: jasmine.SpyObj<CategoryService>;
   /*
   
   beforeEach(() => {
@@ -48,31 +49,32 @@ describe('HomeComponent', () => {
         HomeComponent
       ],
       providers: [
-        FormBuilder
+        FormBuilder,
+        { provide: CategoryService, useValue: jasmine.createSpyObj('CategoryService', ['deleteCategory']) }
       ]
     }).compileComponents();
   });
 
   beforeEach(() => {
     // TODO: spy on other methods too
-    http = jasmine.createSpyObj('HttpClient', ['get']);
+    http = jasmine.createSpyObj('HttpClient', ['get','delete','post']);
     service = new CategoryService(http);
     component= new HomeComponent(service,new FormBuilder(),router);
   });
   
   
-  it('HomeComponent should be created', () => {
+  xit('HomeComponent should be created', () => {
     const fixture= TestBed.createComponent(HomeComponent);
     const app= fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
-  it("AddNewAnswer should be true",()=>{
+  xit("AddNewAnswer should be true",()=>{
     component.typeNewAnswer();
     expect(component.addNewAnswer).toBeTrue(); 
   });
 
-  it('Should loads categories', () => {
+  xit('Should loads categories', () => {
     const mockCategories=
     {
       "categories": [
@@ -94,21 +96,52 @@ describe('HomeComponent', () => {
 
   });
 
-  it("Should remove an element from array Answers",()=>{
-    const fb=new FormBuilder()
-    const n=new FormArray([]);
-    n.push(fb.group({name: '1'}));
+  xit("Should remove an element from array Answers",()=>{
+    const fb=new FormBuilder();
+    const mockAnswers=new FormArray([]);
+    mockAnswers.push(fb.group({name: '1'}));
     let myForm= fb.group({
-      answers : n
+      answers : mockAnswers
     });
     component.myForm=myForm;
     component.delete(0);
-    expect(n.length).toBe(0);
+    expect(mockAnswers.length).toBe(0);
   });
 
-/*
+  xit('should add a new possible answer', (done) => {
+    const fb=new FormBuilder();
+    let mockNewAnswer:FormControl = fb.control('Answer1');
+    let myForm= fb.group({
+      question: [],
+      answers : fb.array( 
+        [])
+    });
+    component.newAnswer=mockNewAnswer;
+    component.myForm=myForm;
+    component.addAnswer();
+    let answers= component.myForm.controls['answers'].value as unknown as Array<string>;
+    expect(answers.length).toBe(1);
+    done();
+  });
 
-  it('should delete item on confirmation', (done) => {
+  xit('answers from forms should be empty', (done) => {
+    const fb=new FormBuilder();
+    const mockAnswers=new FormArray([]);
+    mockAnswers.push(fb.group({name: '1'}));
+    let myForm= fb.group({
+      answers : mockAnswers
+    });
+    component.myForm=myForm;
+    component.reset();
+    let answers= component.myForm.controls['answers'].value as unknown as Array<string>;
+    expect(answers.length).toBe(0);
+    done();
+  });
+
+
+
+  xit('should delete item on confirmation', (done) => {
+    
     const mockCategories=
     {
       "categories": [
@@ -124,32 +157,152 @@ describe('HomeComponent', () => {
           }
       ]
     }
-    http = jasmine.createSpyObj('HttpClient', ['delete','get']);
-    console.log(http);
-    
+
     http.get.and.returnValue(of(mockCategories));
-
-
-    component.ngOnInit();
-
-    component.deleteCategory(1011);
-    //console.log(Swal.getTitle().);
-    console.log("qwerty");
-    
+    const deleteSuccess= {msg: "Category deleted4"};
     console.log(component.categories.length);
+    component.ngOnInit();
     
+    spyOn(service,'deleteCategory2').and.callFake(()=>{
+      mockCategories.categories=mockCategories.categories.filter(item => item.categoryID !== 4);
+      return of(deleteSuccess);
+    });
+    
+    component.deleteCategory(1011);
     
     expect(Swal.isVisible()).toBeTruthy();
     //expect(Swal.getTitle()).toEqual('Are you sure to delete item?');
     Swal.clickConfirm();
     setTimeout(() => {
       expect(component.categories.length).toEqual(1);
+      Swal.clickConfirm();
       done();
     });
+   
+    //component.ngOnInit();
+
+  //   /*
+  //   TestBed.configureTestingModule({
+  //     imports:[
+  //       RouterTestingModule,
+  //       HttpClientTestingModule,
+  //     ],
+  //     declarations:[
+  //       HomeComponent
+  //     ],
+  //     providers: [
+  //       { provide: CategoryService, useValue: mockService }
+  //     ]
+  //   });
+  //   */
+  //   const deleteSuccess= {msg: "Category deleted"};
+    
+  //   mockService.deleteCategory.and.returnValue(of(deleteSuccess));
+  //   console.log("sali");
+
+  //   http = jasmine.createSpyObj('HttpClient', ['delete','get']);
+  //   console.log(http);
+  //   http.get.and.returnValue(of(mockCategories));
+    
+  //   //component= new HomeComponent(mockService,new FormBuilder(),router);
+  //   console.log("qwerty");
+  //   console.log(component.categories.length);
+
+  //   //component.deleteCategory(1011);
+  //   //console.log(Swal.getTitle().);
+    
+  //   console.log(component.categories.length);
+    
+    
+  //  // expect(Swal.isVisible()).toBeTruthy();
+  //   //expect(Swal.getTitle()).toEqual('Are you sure to delete item?');
+  //   // Swal.clickConfirm();
+  //   // setTimeout(() => {
+  //   //   expect(component.categories.length).toEqual(1);
+  //   //   done();
+  //   // });
+   });
+
+  
+   //saveAnswers
+  xit('should saves answers', (done) => {
+    const fb=new FormBuilder();
+    const mockAnswers:Answer[]=[
+      {
+        correct:true,
+        posibleAnswer:'Marco',
+        questionID:4
+      }
+    ];
+    /*
+    const mockCategoryID=4;
+    let mockQuestion:Question;
+
+    mockAnswers.push(fb.group({name: 'Marco'}));
+    let mockForm= fb.group({
+      question: ["Como te llamas?"],
+      answers : mockAnswers
+    });
+    
+    component.categoryID=mockCategoryID;
+    component.myForm=mockForm;
+    */
+    
+    component.saveAnswers(mockAnswers);
+    spyOn(service,'postAnswers').and.callFake(()=>{
+      console.log("respuestas recibidas por el servicio");
+      
+      console.log(mockAnswers);
+      
+      return from(mockAnswers);
+    });
+
+
+    // spyOn(component,'saveAnswers').and.callFake((mockAnswers)=>{
+    //   return of(mockQuestion);
+    // });
+
+
+
+    component.saveQuestion();
   });
-*/
 
 
+   //saveQuestion
+   xit('should saves questions', (done) => {
+    const fb=new FormBuilder();
+    const mockAnswers=new FormArray([]);
+    const mockCategoryID=4;
+    let mockQuestion:Question;
+
+    mockAnswers.push(fb.group({name: 'Marco'}));
+    let mockForm= fb.group({
+      question: ["Como te llamas?"],
+      answers : mockAnswers
+    });
+    
+    component.categoryID=mockCategoryID;
+    component.myForm=mockForm;
+
+    mockQuestion={
+      categoryID:mockCategoryID,
+      query:"Como te llamas?",
+      questionID:1
+    }
+
+    spyOn(service,'postQuestion').and.callFake((mockQuestion)=>{
+      return of(mockQuestion);
+    });
+
+
+    // spyOn(component,'saveAnswers').and.callFake((mockAnswers)=>{
+    //   return of(mockQuestion);
+    // });
+
+
+
+    component.saveQuestion();
+  });
   /*
   it('should return expected categories', () => {
     

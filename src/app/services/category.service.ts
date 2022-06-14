@@ -46,9 +46,7 @@ export class CategoryService {
   }
 
 
-  deleteCategory(id:number){
-    console.log("entre a borrar:"+ id);  
-    
+  deleteCategory2(id:number){
     return this.http.delete(`${base_url}/categories/${id}`);
   }
 
@@ -61,6 +59,8 @@ export class CategoryService {
   }
 
   postQuestion(body:Question){
+    console.log("entre");
+    
     return this.http.post<any>(`${base_url}/questions`,body)
     .pipe(
       map((resp: {ok:boolean,question:Question} ) => resp.question) 
@@ -69,10 +69,11 @@ export class CategoryService {
   }
 
   postAnswers(body:Answer[]){
-    return this.http.post<any>(`${base_url}/answers`,body)
-    .pipe(
-      map((resp: {ok:boolean,answers:Answer[]} ) => resp.answers) 
-    );
+    console.log("entre");
+    console.log(body);
+    
+    
+    return this.http.post<any>(`${base_url}/answers`,body);
   }
 
 }
