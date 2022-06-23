@@ -63,18 +63,18 @@ describe('HomeComponent', () => {
   });
   
   
-  xit('HomeComponent should be created', () => {
+  it('HomeComponent should be created', () => {
     const fixture= TestBed.createComponent(HomeComponent);
     const app= fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
-  xit("AddNewAnswer should be true",()=>{
+  it("AddNewAnswer should be true",()=>{
     component.typeNewAnswer();
     expect(component.addNewAnswer).toBeTrue(); 
   });
 
-  xit('Should loads categories', () => {
+  it('Should loads categories', () => {
     const mockCategories=
     {
       "categories": [
@@ -96,7 +96,7 @@ describe('HomeComponent', () => {
 
   });
 
-  xit("Should remove an element from array Answers",()=>{
+  it("Should remove an element from array Answers",()=>{
     const fb=new FormBuilder();
     const mockAnswers=new FormArray([]);
     mockAnswers.push(fb.group({name: '1'}));
@@ -108,7 +108,7 @@ describe('HomeComponent', () => {
     expect(mockAnswers.length).toBe(0);
   });
 
-  xit('should add a new possible answer', (done) => {
+  it('should add a new possible answer', (done) => {
     const fb=new FormBuilder();
     let mockNewAnswer:FormControl = fb.control('Answer1');
     let myForm= fb.group({
@@ -124,7 +124,7 @@ describe('HomeComponent', () => {
     done();
   });
 
-  xit('answers from forms should be empty', (done) => {
+  it('answers from forms should be empty', (done) => {
     const fb=new FormBuilder();
     const mockAnswers=new FormArray([]);
     mockAnswers.push(fb.group({name: '1'}));
@@ -140,8 +140,7 @@ describe('HomeComponent', () => {
 
 
 
-  xit('should delete item on confirmation', (done) => {
-    
+  it('should delete category', (done) => {
     const mockCategories=
     {
       "categories": [
@@ -178,54 +177,11 @@ describe('HomeComponent', () => {
       Swal.clickConfirm();
       done();
     });
-   
-    //component.ngOnInit();
-
-  //   /*
-  //   TestBed.configureTestingModule({
-  //     imports:[
-  //       RouterTestingModule,
-  //       HttpClientTestingModule,
-  //     ],
-  //     declarations:[
-  //       HomeComponent
-  //     ],
-  //     providers: [
-  //       { provide: CategoryService, useValue: mockService }
-  //     ]
-  //   });
-  //   */
-  //   const deleteSuccess= {msg: "Category deleted"};
-    
-  //   mockService.deleteCategory.and.returnValue(of(deleteSuccess));
-  //   console.log("sali");
-
-  //   http = jasmine.createSpyObj('HttpClient', ['delete','get']);
-  //   console.log(http);
-  //   http.get.and.returnValue(of(mockCategories));
-    
-  //   //component= new HomeComponent(mockService,new FormBuilder(),router);
-  //   console.log("qwerty");
-  //   console.log(component.categories.length);
-
-  //   //component.deleteCategory(1011);
-  //   //console.log(Swal.getTitle().);
-    
-  //   console.log(component.categories.length);
-    
-    
-  //  // expect(Swal.isVisible()).toBeTruthy();
-  //   //expect(Swal.getTitle()).toEqual('Are you sure to delete item?');
-  //   // Swal.clickConfirm();
-  //   // setTimeout(() => {
-  //   //   expect(component.categories.length).toEqual(1);
-  //   //   done();
-  //   // });
    });
 
   
    //saveAnswers
-  xit('should saves answers', (done) => {
+  it('should saves answers', (done) => {
     const fb=new FormBuilder();
     const mockAnswers:Answer[]=[
       {
@@ -248,7 +204,6 @@ describe('HomeComponent', () => {
     component.myForm=mockForm;
     */
     
-    component.saveAnswers(mockAnswers);
     spyOn(service,'postAnswers').and.callFake(()=>{
       console.log("respuestas recibidas por el servicio");
       
@@ -256,26 +211,24 @@ describe('HomeComponent', () => {
       
       return from(mockAnswers);
     });
-
-
-    // spyOn(component,'saveAnswers').and.callFake((mockAnswers)=>{
-    //   return of(mockQuestion);
-    // });
-
-
-
-    component.saveQuestion();
+    component.saveAnswers(mockAnswers);
+    expect(Swal.isVisible()).toBeTrue();
+    expect(Swal.getTitle()?.innerHTML).toEqual('Answers saved');
+    setTimeout(() => {
+      Swal.clickConfirm();
+      done();
+    });
   });
 
 
    //saveQuestion
-   xit('should saves questions', (done) => {
+   it('should saves questions', (done) => {
     const fb=new FormBuilder();
     const mockAnswers=new FormArray([]);
     const mockCategoryID=4;
     let mockQuestion:Question;
 
-    mockAnswers.push(fb.group({name: 'Marco'}));
+    mockAnswers.push(fb.group({name: 'Marco2'}));
     let mockForm= fb.group({
       question: ["Como te llamas?"],
       answers : mockAnswers
@@ -290,18 +243,24 @@ describe('HomeComponent', () => {
       questionID:1
     }
 
-    spyOn(service,'postQuestion').and.callFake((mockQuestion)=>{
+    spyOn(service,'postQuestion').and.callFake(()=>{
       return of(mockQuestion);
     });
 
 
-    // spyOn(component,'saveAnswers').and.callFake((mockAnswers)=>{
-    //   return of(mockQuestion);
-    // });
-
-
+    spyOn(service,'postAnswers').and.callFake(()=>{
+      return of(mockAnswers);
+    });
 
     component.saveQuestion();
+    expect(Swal.isVisible()).toBeTrue();
+    expect(Swal.getTitle()?.innerHTML).toEqual('Answers saved');
+    setTimeout(() => {
+      Swal.clickConfirm();
+      done();
+    });
+
+    
   });
   /*
   it('should return expected categories', () => {

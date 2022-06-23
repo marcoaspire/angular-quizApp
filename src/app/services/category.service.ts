@@ -22,6 +22,8 @@ export class CategoryService {
   }
 
   getQuestionsByCategory(id:number){
+    console.log("NO DEBE ENTRAR ");
+    
     return this.http.get(`${base_url}/categories/${id}`)
     .pipe(
        map((res:any) => {
@@ -59,9 +61,7 @@ export class CategoryService {
   }
 
   postQuestion(body:Question){
-    console.log("entre");
-    
-    return this.http.post<any>(`${base_url}/questions`,body)
+   return this.http.post<any>(`${base_url}/questions`,body)
     .pipe(
       map((resp: {ok:boolean,question:Question} ) => resp.question) 
     );
@@ -69,9 +69,8 @@ export class CategoryService {
   }
 
   postAnswers(body:Answer[]){
-    console.log("entre");
+    console.log("NO DEBE ENTRAR:entre a post, se va a postear:");
     console.log(body);
-    
     
     return this.http.post<any>(`${base_url}/answers`,body);
   }

@@ -317,7 +317,7 @@ xdescribe('CategoryService', () => {
       service.postAnswers(mockPostAnswers)
       .subscribe({
         next: answers => {
-          expect(answers).toEqual(mockResultPostAnswers.answers);
+          expect(answers).toEqual(mockResultPostAnswers);
           done();
         },
         error: done.fail

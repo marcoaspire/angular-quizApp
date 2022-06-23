@@ -54,6 +54,8 @@ export class TestComponent implements OnInit,OnDestroy {
       delay(1000)
     )
     .subscribe(({category}) => {
+      console.log(category);
+      
       this.categoriesService.getQuestionsByCategory(category)
       .subscribe((res:any) => {
         console.log(res);

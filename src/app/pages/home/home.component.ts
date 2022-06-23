@@ -55,14 +55,14 @@ export class HomeComponent implements OnInit {
 
   //ya
   getCategories(){
-    console.log("get categories");
+    //console.log("get categories");
     
-    console.log(this.categoryService);
+    //console.log(this.categoryService);
     
     //now.setHours();
     this.categoryService.getCategories()
     .subscribe((resp:any) => {
-      console.log(resp);
+      //console.log(resp);
       
      this.categories=resp.categories;
 
@@ -75,8 +75,8 @@ export class HomeComponent implements OnInit {
 
 
     });
-    console.log("sali getCategories");
-    console.log(this.categories.length);
+    //console.log("sali getCategories");
+    //console.log(this.categories.length);
     
   }
 
@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit {
         this.categoryService.deleteCategory2(id)
         .subscribe({
           next: (res:any) => {
-            console.log("eliminado a " +id);
+            //console.log("eliminado a " +id);
             Swal.fire('Category deleted',res.msg,'success');
             this.getCategories();
           },
@@ -132,8 +132,6 @@ export class HomeComponent implements OnInit {
       .subscribe(
         {
           next: (resp:Question) => {
-            console.log("aqui");
-            
             const questionID= resp.questionID;
             //save question
             for (let index = 0; index < this.myForm.value.answers.length; index++) {
@@ -190,11 +188,17 @@ export class HomeComponent implements OnInit {
     
     this.categoryService.postAnswers(answers)
     .subscribe({
-      next: () => {
-        Swal.fire('chido','','success');
+      next: (res) => {
+        console.log(res);
+        
+        Swal.fire('Answers saved','','success');
         
       },
-      error:() => Swal.fire('error','','error')
+      error:(err) => {
+        console.log(err);
+        
+        Swal.fire('error','','error');
+      }
     })
   }
   //ya
@@ -217,7 +221,7 @@ export class HomeComponent implements OnInit {
     while (answers.length !== 0) {
       answers.removeAt(0)
     }
-    console.log(answers.length);
+    //console.log(answers.length);
     this.addNewAnswer=false;
   }
   
