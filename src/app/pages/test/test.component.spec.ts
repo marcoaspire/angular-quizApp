@@ -176,13 +176,9 @@ describe('TestComponent', () => {
   });
 
   it('should show a modal with the results', (done) => {
-    //const fixture= TestBed.createComponent(TestComponent);
-    //const app= fixture.componentInstance;
     const fb=new FormBuilder();
-    //const mockAnswers=new FormArray([]);
     const mockCategoryID=4;
     let mockAnswers:any[]=[];
-    
     mockAnswers.push(
       {
         correct:false,
@@ -197,62 +193,26 @@ describe('TestComponent', () => {
         answerID:2
       }
     );
-    console.log('array answers', mockAnswers);
-    
-
     let mockForm= fb.group({
       questionID1: ["1"],
       questionID2: ["0"]
       //answers : mockAnswers
     });
-    
     component.myForm=mockForm;
-    console.log("aqui");
-    
-    console.log(component.myForm.value);
     component.correctAnswers=mockAnswers;
-    
-    //TODO: Change function in test
+    spyOn(component,'restart').and.callFake(() => {});
 
-    
-    
-    spyOn(component,'prueba2').and.callFake(() => {
-
-      console.log("qwerty21345");
-
-      return "chido";
-    });
-    
-    /*
-    
-    spyOn(component, 'restart').and.callThrough();
-
-    */
-
-    component.prueba();
-
-    
-    //component.checkAnswers();
-    /*
-    console.log(component.score);
+    //act
+    component.checkAnswers();
+    //assert
     expect(Swal.isVisible()).toBeTrue();
     if (component.score>5)
       expect(Swal.getTitle()?.innerHTML).toEqual('Congratulations!');
     else
       expect(Swal.getTitle()?.innerHTML).toEqual('Keep trying!');
 
-    
-      */
-    
-    
-    setTimeout(() => {
-      Swal.clickConfirm();
-      done();
-    });
-    
-
-
-    //expect(app).toBeTruthy();
+     Swal.clickConfirm();
+     done();
   });
 
 

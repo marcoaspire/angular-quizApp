@@ -87,13 +87,6 @@ export class TestComponent implements OnInit,OnDestroy {
           );
         });
         this.myForm = this.fb.group(this.group);
-        
-        
-        console.log("form");
-        console.log(this.myForm.value);
-      
-      
-      
       });
     });
   }
@@ -155,7 +148,7 @@ export class TestComponent implements OnInit,OnDestroy {
         cancelButtonText: 'Close'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.prueba();
+          this.restart();
         }
       })
     }
