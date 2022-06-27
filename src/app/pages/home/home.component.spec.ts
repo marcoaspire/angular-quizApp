@@ -63,18 +63,18 @@ describe('HomeComponent', () => {
   });
   
   
-  it('HomeComponent should be created', () => {
+  xit('HomeComponent should be created', () => {
     const fixture= TestBed.createComponent(HomeComponent);
     const app= fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
-  it("AddNewAnswer should be true",()=>{
+  xit("AddNewAnswer should be true",()=>{
     component.typeNewAnswer();
     expect(component.addNewAnswer).toBeTrue(); 
   });
 
-  it('Should loads categories', () => {
+  xit('Should loads categories', () => {
     const mockCategories=
     {
       "categories": [
@@ -96,7 +96,7 @@ describe('HomeComponent', () => {
 
   });
 
-  it("Should remove an element from array Answers",()=>{
+  xit("Should remove an element from array Answers",()=>{
     const fb=new FormBuilder();
     const mockAnswers=new FormArray([]);
     mockAnswers.push(fb.group({name: '1'}));
@@ -108,7 +108,7 @@ describe('HomeComponent', () => {
     expect(mockAnswers.length).toBe(0);
   });
 
-  it('should add a new possible answer', (done) => {
+  xit('should add a new possible answer', (done) => {
     const fb=new FormBuilder();
     let mockNewAnswer:FormControl = fb.control('Answer1');
     let myForm= fb.group({
@@ -124,7 +124,7 @@ describe('HomeComponent', () => {
     done();
   });
 
-  it('answers from forms should be empty', (done) => {
+  xit('answers from forms should be empty', (done) => {
     const fb=new FormBuilder();
     const mockAnswers=new FormArray([]);
     mockAnswers.push(fb.group({name: '1'}));
@@ -140,7 +140,7 @@ describe('HomeComponent', () => {
 
 
 
-  it('should delete category', (done) => {
+  xit('should delete category', (done) => {
     const mockCategories=
     {
       "categories": [
@@ -160,7 +160,7 @@ describe('HomeComponent', () => {
     http.get.and.returnValue(of(mockCategories));
     const deleteSuccess= {msg: "Category deleted4"};
     console.log(component.categories.length);
-    component.ngOnInit();
+    //component.ngOnInit();
     
     spyOn(service,'deleteCategory2').and.callFake(()=>{
       mockCategories.categories=mockCategories.categories.filter(item => item.categoryID !== 4);
@@ -181,7 +181,7 @@ describe('HomeComponent', () => {
 
   
    //saveAnswers
-  it('should saves answers', (done) => {
+  xit('should saves answers', (done) => {
     const fb=new FormBuilder();
     const mockAnswers:Answer[]=[
       {
@@ -222,7 +222,7 @@ describe('HomeComponent', () => {
 
 
    //saveQuestion
-   it('should saves questions', (done) => {
+   xit('should saves questions', (done) => {
     const fb=new FormBuilder();
     const mockAnswers=new FormArray([]);
     const mockCategoryID=4;

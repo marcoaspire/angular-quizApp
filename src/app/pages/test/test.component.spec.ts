@@ -17,7 +17,7 @@ export interface Post{
   title: string;
 }
 
-xdescribe('TestComponent', () => {
+describe('TestComponent', () => {
   let component: TestComponent;
   let router: jasmine.SpyObj<Router>;
   let http: jasmine.SpyObj<HttpClient>;
@@ -49,14 +49,6 @@ xdescribe('TestComponent', () => {
     http = jasmine.createSpyObj('HttpClient', ['get','delete','post']);
     service = new CategoryService(http);
     activatedRoute=TestBed.inject(ActivatedRoute);
-    //console.log(activatedRoute.params);
-    /*
-    activatedRoute.params.subscribe(params => {
-        console.log("aqui");
-        
-        console.log(params);
-    });
-    */
     component= new TestComponent(activatedRoute,service,new FormBuilder(),router);
   });
   
@@ -67,55 +59,205 @@ xdescribe('TestComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it('Should get question with its answers', () => {
-
-    const mockQuestion=
+  xit('Should get question with its answers', () => {
+    const mockQuestions=
     {
-        "question": {
-            "questionID": 10,
-            "question": "Which of these cities does NOT border the Great Lakes?",
-            "categoryID": 4,
-            "category": "Geography",
-            "answers": [
+        "category": {
+          "categoryID": 4,
+          "categoryName": "Geography",
+          "question": [
                 {
-                    "answerID": 32,
-                    "posibleAnswer": "Toronto",
-                    "questionID": 10,
-                    "correct": false,
-                    "question": null
+                    "questionID": 3,
+                    "query": "Which of these U.S. states does NOT border Canada?",
+                    "categoryID": 4,
+                    "answers": [
+                        {
+                            "answerID": 4,
+                            "posibleAnswer": "Maine",
+                            "questionID": 3,
+                            "correct": false
+                        },
+                        {
+                            "answerID": 5,
+                            "posibleAnswer": "Minnesota",
+                            "questionID": 3,
+                            "correct": false
+                        },
+                        {
+                            "answerID": 6,
+                            "posibleAnswer": "Alaska",
+                            "questionID": 3,
+                            "correct": false
+                        },
+                        {
+                            "answerID": 7,
+                            "posibleAnswer": "Indiana",
+                            "questionID": 3,
+                            "correct": true
+                        }
+                    ]
                 },
                 {
-                    "answerID": 33,
-                    "posibleAnswer": "Chicago",
-                    "questionID": 10,
-                    "correct": false,
-                    "question": null
-                }
+                    "questionID": 4,
+                    "query": "Which of these countries was NOT a part of the Soviet Union?",
+                    "categoryID": 4,
+                    "answers": [
+                        {
+                            "answerID": 8,
+                            "posibleAnswer": "Belarus",
+                            "questionID": 4,
+                            "correct": false
+                        },
+                        {
+                            "answerID": 9,
+                            "posibleAnswer": "Ukraine",
+                            "questionID": 4,
+                            "correct": false
+                        },
+                        {
+                            "answerID": 10,
+                            "posibleAnswer": "Georgia",
+                            "questionID": 4,
+                            "correct": false
+                        },
+                        {
+                            "answerID": 11,
+                            "posibleAnswer": "Poland",
+                            "questionID": 4,
+                            "correct": true
+                        }
+                    ]
+                },
             ]
         }
     }
-    http.get.and.returnValue(of(mockQuestion));
-    
+    http.get.and.returnValue(of(mockQuestions));
     const id=4;
-    //component.ngOnInit();
-
     spyOn(service,'getQuestionsByCategory').and.callFake((id:number) => {
-        console.log("entre");
-        console.log(id);
         return of(
             {
                 'categoryName' : "Geography",
-                'questions': mockQuestion.question
+                'questions': mockQuestions.category.question
             }
         );
     });
-
-
+    
     component.getData();
-    
     expect(component.questions.length).toBe(2);
-    
+    expect(service.getQuestionsByCategory).toHaveBeenCalled();
   });
+
+  //TODO> FIX
+  xit('should lose the focus automatically after user select an option', () => {
+    const fixture= TestBed.createComponent(TestComponent);
+    const app= fixture.componentInstance;
+    var dummyElement = document.createElement('div');
+    dummyElement.setAttribute("id","questionID1");
+    dummyElement.setAttribute("tabindex","1");
+
+    document.getElementById = jasmine.createSpy('HTML Element').and.returnValue(dummyElement);
+    
+    //component.unfocus(1);
+    console.log("aqui");
+    var a=document.getElementById('d');
+    dummyElement?.focus();
+    a?.focus();
+    //console.log( document.getElementById('d')?.focus());
+    console.log("focus ");
+    
+    console.log(document.activeElement);
+    console.log(document.activeElement === document.getElementById('d'));
+      
+    console.log("funcion");
+    
+    component.unfocus(4);
+
+
+  });
+
+  it('should show a modal with the results', (done) => {
+    //const fixture= TestBed.createComponent(TestComponent);
+    //const app= fixture.componentInstance;
+    const fb=new FormBuilder();
+    //const mockAnswers=new FormArray([]);
+    const mockCategoryID=4;
+    let mockAnswers:any[]=[];
+    
+    mockAnswers.push(
+      {
+        correct:false,
+        posibleAnswer:'1',
+        questionID:1,
+        answerID:1
+      },
+      {
+        correct:true,
+        posibleAnswer:'1',
+        questionID:2,
+        answerID:2
+      }
+    );
+    console.log('array answers', mockAnswers);
+    
+
+    let mockForm= fb.group({
+      questionID1: ["1"],
+      questionID2: ["0"]
+      //answers : mockAnswers
+    });
+    
+    component.myForm=mockForm;
+    console.log("aqui");
+    
+    console.log(component.myForm.value);
+    component.correctAnswers=mockAnswers;
+    
+    //TODO: Change function in test
+
+    
+    
+    spyOn(component,'prueba2').and.callFake(() => {
+
+      console.log("qwerty21345");
+
+      return "chido";
+    });
+    
+    /*
+    
+    spyOn(component, 'restart').and.callThrough();
+
+    */
+
+    component.prueba();
+
+    
+    //component.checkAnswers();
+    /*
+    console.log(component.score);
+    expect(Swal.isVisible()).toBeTrue();
+    if (component.score>5)
+      expect(Swal.getTitle()?.innerHTML).toEqual('Congratulations!');
+    else
+      expect(Swal.getTitle()?.innerHTML).toEqual('Keep trying!');
+
+    
+      */
+    
+    
+    setTimeout(() => {
+      Swal.clickConfirm();
+      done();
+    });
+    
+
+
+    //expect(app).toBeTruthy();
+  });
+
+
+  
+
 
 
 

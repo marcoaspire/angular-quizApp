@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
 import { take,map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Answer, Question } from '../interfaces/interfaces.interfaces';
@@ -73,6 +74,12 @@ export class CategoryService {
     console.log(body);
     
     return this.http.post<any>(`${base_url}/answers`,body);
+  }
+
+  prueba(id:number){
+    console.log("servicio prueba, NO DEBE ENTRAR");
+
+    return of(id);
   }
 
 }

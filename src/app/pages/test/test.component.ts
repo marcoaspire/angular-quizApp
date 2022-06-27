@@ -14,7 +14,7 @@ import Swal from 'sweetalert2'
 })
 export class TestComponent implements OnInit,OnDestroy {
 
-  timerDefault=60;
+  timerDefault=10;
   hours:number=0;
   minutes:number=1;
   seconds:number=this.timerDefault;
@@ -44,17 +44,27 @@ export class TestComponent implements OnInit,OnDestroy {
     this.restart();
   }
 
+
+  prueba():void{
+    this.prueba2();
+  }
+  prueba2():void{
+    console.log("prueba2: no debe entrar aqui");
+    
+  }
+
   ngOnDestroy(): void {
     clearInterval(this.interval);
   }
-
+  //ya
   getData(){
     this.activatedRoute.params
     .pipe(
-      delay(1000)
+      //delay(1000)
     )
     .subscribe(({category}) => {
-      console.log(category);
+     console.log(category);//4
+      console.log(typeof(category));
       
       this.categoriesService.getQuestionsByCategory(category)
       .subscribe((res:any) => {
@@ -77,6 +87,13 @@ export class TestComponent implements OnInit,OnDestroy {
           );
         });
         this.myForm = this.fb.group(this.group);
+        
+        
+        console.log("form");
+        console.log(this.myForm.value);
+      
+      
+      
       });
     });
   }
@@ -138,7 +155,7 @@ export class TestComponent implements OnInit,OnDestroy {
         cancelButtonText: 'Close'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.restart();
+          this.prueba();
         }
       })
     }
@@ -151,6 +168,8 @@ export class TestComponent implements OnInit,OnDestroy {
     return this.myForm.controls[field].errors && this.myForm.controls[field].touched;
   }
   restart(){
+    console.log("no debe entrar a este restart");
+    
     clearInterval(this.interval);
     this.score=0;
     this.getData();
@@ -185,15 +204,13 @@ export class TestComponent implements OnInit,OnDestroy {
     },1000);
   }
 
-  cambio(questionID:number){
-    console.log("cambiando" + `questionID${questionID}`);
-    const q=document.getElementById(`questionID${questionID}`);
-
-    console.log(q);
-    q?.blur();
-
-
+  unfocus(questionID:number){
+    const answer=document.getElementById(`questionID${questionID}`);
+    console.log("cambiando:" + `questionID${questionID}`);
+    answer?.blur();
     
+    //var isFocused = (document.activeElement === answer);
+    //console.log(document.activeElement === answer);
   }
 
 }

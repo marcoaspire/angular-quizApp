@@ -36,7 +36,7 @@
         <label class="form-label">
           {{question.query}}
         </label>
-        <select class="form-control" [class.red]="checkAnswer(i)" formControlName="questionID{{question.questionID}}" (change)="cambio(question.questionID)"
+        <select class="form-control" [class.red]="checkAnswer(i)" formControlName="questionID{{question.questionID}}" (change)="unfocus(question.questionID)"
           id="questionID{{question.questionID}}"
         >
           <option  [disabled]="!isInitiated" value=""  >Choose an option</option>
